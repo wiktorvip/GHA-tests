@@ -18,6 +18,10 @@ jobs:
       if: ${{ hashFiles('VERSION1') != '' }}
       run: VER=$(cat VERSION1); echo "VERSION1=$VER" >> ${GITHUB_ENV}
 
+    - name: Set varable VERSION1
+      if: ${{ hashFiles('VERSION1') = '' }}
+      run: echo "VERSION1=1.0.0" >> ${GITHUB_ENV}
+
     - name: Lowercase the repo name and username
       run: echo "GH_REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
       
