@@ -1,0 +1,45 @@
+name: Print environment variables
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set varable VERSION
+      run: VER=$(cat VERSION); echo "VERSION=$VER" >> ${GITHUB_ENV}
+
+    - name: Set varable VERSION1
+      if: ${{ hashFiles('VERSION1') != '' }}
+      run: VER=$(cat VERSION1); echo "VERSION1=$VER" >> ${GITHUB_ENV}
+
+    - name: Lowercase the repo name and username
+      run: echo "GH_REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+      
+    - name: Print
+      run: env | sort
+
+    - name: Print
+      run: ls -la /
+
+    - name: Print
+      run: ls -la /etc/
+
+    - name: Print
+      run: echo ${{ github.event.repository.name }}
+
+    - name: Print
+      run: echo ${{ github.repository }}
+
+    - name: Dump context
+      uses: crazy-max/ghaction-dump-context@v2
+
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
