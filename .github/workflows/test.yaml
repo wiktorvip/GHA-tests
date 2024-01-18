@@ -16,18 +16,25 @@ jobs:
       uses: andstor/file-existence-action@v2
       with:
         files: "Dockerfile"
-
-    - name: File exists
+        
+    - name: Set ENV APP_COLOR
       if: steps.check_files.outputs.files_exists == 'true'
       # Only runs if all of the files exists
       run: echo "$(awk '/APP_COLOR/ {print $2}' Dockerfile)" >> ${GITHUB_ENV}
 
-    - name: File exists
+    - name: Set ENV APP_COLOR if not present at Dockerfile
+      if: ${{ env.APP_COLOR == '' }}
+      run: echo "APP_COLOR=darkblue" >> ${GITHUB_ENV}
+
+    - name: Set ENV APP_VERSION
       if: steps.check_files.outputs.files_exists == 'true'
       # Only runs if all of the files exists
       run: echo "$(awk '/APP_VERSION/ {print $2}' Dockerfile)" >> ${GITHUB_ENV}
 
-    
+    - name: Set ENV APP_VERSION if not present at Dockerfile
+      if: ${{ env.APP_VERSION == '' }}
+      run: echo "APP_VERSION=v7" >> ${GITHUB_ENV}
+
 
      
     - name: Set varable VERSION
