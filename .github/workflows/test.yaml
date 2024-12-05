@@ -73,3 +73,10 @@ jobs:
       env:
         GITHUB_CONTEXT: ${{ toJSON(github) }}
       run: echo "$GITHUB_CONTEXT"
+
+    - name: Print github.ref_name
+      run: echo ${{ github.ref_name }}
+
+    - name: Print github.event.inputs.version
+      run: echo ${{ github.event.inputs.version }}
+      
